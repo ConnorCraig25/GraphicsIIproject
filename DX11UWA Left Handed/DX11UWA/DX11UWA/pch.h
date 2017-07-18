@@ -13,3 +13,35 @@
 #include <memory>
 #include <agile.h>
 #include <concrt.h>
+#include <vector>
+#include "Content\ShaderStructures.h"
+#include "Common\DDSTextureLoader.h"
+
+using namespace DX11UWA;
+using namespace std;
+using namespace DirectX;
+using namespace Windows::Foundation;
+
+class Mesh
+{
+public:
+	Mesh() {};
+	Mesh(vector<XMFLOAT3> pos,
+		vector<XMFLOAT3> uvs,
+		vector<XMFLOAT3> normals,
+		vector<XMINT3> trindices);
+	~Mesh();
+
+	vector<VertexPositionUVNormal> uniqueVertList;
+	vector<unsigned int> indexbuffer;
+private:
+
+
+};
+
+class Texture
+{
+
+};
+
+

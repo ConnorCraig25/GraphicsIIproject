@@ -221,11 +221,11 @@ void Sample3DSceneRenderer::Render(void)
 	// Prepare the constant buffer to send it to the graphics device.
 	context->UpdateSubresource1(m_constantBuffer.Get(), 0, NULL, &m_constantBufferData, 0, 0, 0);
 	// Each vertex is one instance of the VertexPositionColor struct.
-	UINT stride = sizeof(VertexPositionColor);
+	UINT stride = sizeof(VertexPositionUVNormal);
 	UINT offset = 0;
 	context->IASetVertexBuffers(0, 1, m_vertexBuffer.GetAddressOf(), &stride, &offset);
 	// Each index is one 16-bit unsigned integer (short).
-	context->IASetIndexBuffer(m_indexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
+	context->IASetIndexBuffer(m_indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	context->IASetInputLayout(m_inputLayout.Get());
 	// Attach our vertex shader.
@@ -234,6 +234,7 @@ void Sample3DSceneRenderer::Render(void)
 	context->VSSetConstantBuffers1(0, 1, m_constantBuffer.GetAddressOf(), nullptr, nullptr);
 	// Attach our pixel shader.
 	context->PSSetShader(m_pixelShader.Get(), nullptr, 0);
+	context->PSSetShaderResources(0, 1, m_sphereTex.GetAddressOf());
 	// Draw the objects.
 	context->DrawIndexed(m_indexCount, 0, 0);
 }
@@ -253,6 +254,7 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 		{
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "UV", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		};
 
 		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateInputLayout(vertexDesc, ARRAYSIZE(vertexDesc), &fileData[0], fileData.size(), &m_inputLayout));
@@ -270,24 +272,88 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 	// Once both shaders are loaded, create the mesh.
 	auto createCubeTask = (createPSTask && createVSTask).then([this]()
 	{
-		// Load mesh vertices. Each vertex has a position and a color.
-		static const VertexPositionColor cubeVertices[] =
+		vector<XMFLOAT3> pos;
+		vector<XMFLOAT3> uvs;
+		vector<XMFLOAT3> normals;
+		vector<XMINT3> trindices;
+		FILE * file = nullptr;
+		fopen_s(&file, "Assets/sphere.obj", "r");
+		if (file != NULL)
 		{
-			{XMFLOAT3(-0.5f, -0.5f, -0.5f), XMFLOAT3(0.0f, 0.0f, 0.0f)},
-			{XMFLOAT3(-0.5f, -0.5f,  0.5f), XMFLOAT3(0.0f, 0.0f, 1.0f)},
-			{XMFLOAT3(-0.5f,  0.5f, -0.5f), XMFLOAT3(0.0f, 1.0f, 0.0f)},
-			{XMFLOAT3(-0.5f,  0.5f,  0.5f), XMFLOAT3(0.0f, 1.0f, 1.0f)},
-			{XMFLOAT3( 0.5f, -0.5f, -0.5f), XMFLOAT3(1.0f, 0.0f, 0.0f)},
-			{XMFLOAT3( 0.5f, -0.5f,  0.5f), XMFLOAT3(1.0f, 0.0f, 1.0f)},
-			{XMFLOAT3( 0.5f,  0.5f, -0.5f), XMFLOAT3(1.0f, 1.0f, 0.0f)},
-			{XMFLOAT3( 0.5f,  0.5f,  0.5f), XMFLOAT3(1.0f, 1.0f, 1.0f)},
-		};
+			while (true)
+			{
+				char lineHeader[128];
+				// read the first word of the line
+				int res = fscanf_s(file, "%s", lineHeader, 128);
+				if (res == EOF)
+					break; // EOF = End Of File. Quit the loop.
+
+				if (strcmp(lineHeader, "v") == 0)
+				{
+					XMFLOAT3 postmp;
+					fscanf_s(file, "%f %f %f\n", &postmp.x, &postmp.y, &postmp.z);
+					pos.push_back(postmp);
+				}
+				else if (strcmp(lineHeader, "vt") == 0)
+				{
+					XMFLOAT3 uvtmp;
+					fscanf_s(file, "%f %f\n", &uvtmp.x, &uvtmp.y);
+					uvs.push_back(uvtmp);
+				}
+				else if (strcmp(lineHeader, "vn") == 0) {
+					XMFLOAT3 normaltmp;
+					fscanf_s(file, "%f %f %f\n", &normaltmp.x, &normaltmp.y, &normaltmp.z);
+					normals.push_back(normaltmp);
+				}
+				else if (strcmp(lineHeader, "f") == 0)
+				{
+					XMINT3 index1;
+					XMINT3 index2;
+					XMINT3 index3;
+					fscanf_s(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &index1.x, &index1.y, &index1.z,
+																	&index2.x, &index2.y, &index2.z,
+																	&index3.x, &index3.y, &index3.z);
+					trindices.push_back(index1);
+					trindices.push_back(index2);
+					trindices.push_back(index3);
+				}
+			}
+
+		}
+		Mesh sphere = Mesh(pos, uvs, normals, trindices);
+		// Load mesh vertices. Each vertex has a position and a color.
+
+		//{
+		//	{XMFLOAT3(-0.5f, -0.5f, -0.5f), XMFLOAT3(0.0f, 0.0f, 0.0f)},
+		//	{XMFLOAT3(-0.5f, -0.5f,  0.5f), XMFLOAT3(0.0f, 0.0f, 1.0f)},
+		//	{XMFLOAT3(-0.5f,  0.5f, -0.5f), XMFLOAT3(0.0f, 1.0f, 0.0f)},
+		//	{XMFLOAT3(-0.5f,  0.5f,  0.5f), XMFLOAT3(0.0f, 1.0f, 1.0f)},
+		//	{XMFLOAT3( 0.5f, -0.5f, -0.5f), XMFLOAT3(1.0f, 0.0f, 0.0f)},
+		//	{XMFLOAT3( 0.5f, -0.5f,  0.5f), XMFLOAT3(1.0f, 0.0f, 1.0f)},
+		//	{XMFLOAT3( 0.5f,  0.5f, -0.5f), XMFLOAT3(1.0f, 1.0f, 0.0f)},
+		//	{XMFLOAT3( 0.5f,  0.5f,  0.5f), XMFLOAT3(1.0f, 1.0f, 1.0f)},
+		//};
+
+		//D3D11_TEXTURE2D_DESC texDesc;
+		//D3D11_SUBRESOURCE_DATA texrc;
+		//ZeroMemory(texDesc, sizeof(texDesc));
+		//ZeroMemory(texrc, sizeof(texrc));
+		//texDesc.ArraySize = 1;
+		//texDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+		//texDesc.Format DXGI_FORMAT_B8G8R8A8_UNIFORM_SRGB;
+		//texDesc.Width = 100;   //to be determined
+		//texDesc.Height = 100;  //to be determined
+		//texDesc.MipLevels = 10;//to be determined
+		//texDesc.Usage = D3D11_USAGE_IMMUTABLE;
+		//texDesc.SampleDesc.Count = 1;
+		//texrc.pSysMem = 
+		
 
 		D3D11_SUBRESOURCE_DATA vertexBufferData = { 0 };
-		vertexBufferData.pSysMem = cubeVertices;
+		vertexBufferData.pSysMem = sphere.uniqueVertList.data();
 		vertexBufferData.SysMemPitch = 0;
 		vertexBufferData.SysMemSlicePitch = 0;
-		CD3D11_BUFFER_DESC vertexBufferDesc(sizeof(cubeVertices), D3D11_BIND_VERTEX_BUFFER);
+		CD3D11_BUFFER_DESC vertexBufferDesc(sizeof(VertexPositionUVNormal)*sphere.uniqueVertList.size(), D3D11_BIND_VERTEX_BUFFER);
 		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &m_vertexBuffer));
 
 		// Load mesh indices. Each trio of indices represents
@@ -295,37 +361,38 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 		// For example: 0,2,1 means that the vertices with indexes
 		// 0, 2 and 1 from the vertex buffer compose the 
 		// first triangle of this mesh.
-		static const unsigned short cubeIndices[] =
-		{
-			0,1,2, // -x
-			1,3,2,
+	
+		//{
+		//	0,1,2, // -x
+		//	1,3,2,
+		//
+		//	4,6,5, // +x
+		//	5,6,7,
+		//
+		//	0,5,1, // -y
+		//	0,4,5,
+		//
+		//	2,7,6, // +y
+		//	2,3,7,
+		//
+		//	0,6,4, // -z
+		//	0,2,6,
+		//
+		//	1,7,3, // +z
+		//	1,5,7,-
+		//};
 
-			4,6,5, // +x
-			5,6,7,
-
-			0,5,1, // -y
-			0,4,5,
-
-			2,7,6, // +y
-			2,3,7,
-
-			0,6,4, // -z
-			0,2,6,
-
-			1,7,3, // +z
-			1,5,7,
-		};
-
-		m_indexCount = ARRAYSIZE(cubeIndices);
+		m_indexCount = sphere.indexbuffer.size();
 
 		D3D11_SUBRESOURCE_DATA indexBufferData = { 0 };
-		indexBufferData.pSysMem = cubeIndices;
+		indexBufferData.pSysMem = sphere.indexbuffer.data();
 		indexBufferData.SysMemPitch = 0;
 		indexBufferData.SysMemSlicePitch = 0;
-		CD3D11_BUFFER_DESC indexBufferDesc(sizeof(cubeIndices), D3D11_BIND_INDEX_BUFFER);
+		CD3D11_BUFFER_DESC indexBufferDesc(sizeof(unsigned int)*sphere.indexbuffer.size(), D3D11_BIND_INDEX_BUFFER);
 		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateBuffer(&indexBufferDesc, &indexBufferData, &m_indexBuffer));
 	});
-
+	CreateDDSTextureFromFile(m_deviceResources->GetD3DDevice(),
+		L"Assets/celestial.dds", nullptr, m_sphereTex.GetAddressOf());
 	// Once the cube is loaded, the object is ready to be rendered.
 	createCubeTask.then([this]()
 	{
