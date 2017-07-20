@@ -20,7 +20,14 @@ float4 main(PixelShaderInput input) : SV_TARGET
 	//float4 detailColor = detailTexture.Sample(filters[1], detailUV); // get detail effect
 	//float4 finalColor = float4(lerp(baseColor.rgb, detailColor.rgb, detailColor.a), baseColor.a);
 	//return finalColor; // return a transition based on the detail alpha
-	return  baseTexture.Sample(filters[1],input.uv);
+	float4 tmp = baseTexture.Sample(filters[1],input.uv);
+	if (tmp.a < 0.5f)
+	{
+		discard;
+	}
+
+
+	return  tmp;
 }
 
 

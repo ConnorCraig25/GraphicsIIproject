@@ -39,9 +39,22 @@ private:
 
 };
 
-class Texture
+class SceneObject
 {
+public:
+	SceneObject();
+	~SceneObject();
+
+private:
 
 };
+
+SceneObject::SceneObject()
+{
+}
+
+SceneObject::~SceneObject()
+{
+}
 
 

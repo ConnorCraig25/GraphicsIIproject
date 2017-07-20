@@ -107,6 +107,9 @@
     <Image Include="Assets\celestial.dds">
       <Filter>Assets</Filter>
     </Image>
+    <Image Include="Assets\bunny.dds">
+      <Filter>Assets</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />
@@ -124,6 +127,9 @@
   </ItemGroup>
   <ItemGroup>
     <Object Include="Assets\sphere.obj">
+      <Filter>Assets</Filter>
+    </Object>
+    <Object Include="Assets\bunny.obj">
       <Filter>Assets</Filter>
     </Object>
   </ItemGroup>

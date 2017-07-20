@@ -1,10 +1,5 @@
-﻿  pch.cpp
-  App.cpp
-  DDSTextureLoader.cpp
-  DeviceResources.cpp
-  Sample3DSceneRenderer.cpp
-  SampleFpsTextRenderer.cpp
-  DX11UWAMain.cpp
+﻿  Sample3DSceneRenderer.cpp
+c:\users\chamjam\documents\github\graphicsiiproject\dx11uwa left handed\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(76): warning C4305: 'argument': truncation from 'double' to 'float'
 c:\users\chamjam\documents\github\graphicsiiproject\dx11uwa left handed\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(356): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
 c:\users\chamjam\documents\github\graphicsiiproject\dx11uwa left handed\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(385): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
 c:\users\chamjam\documents\github\graphicsiiproject\dx11uwa left handed\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(391): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data

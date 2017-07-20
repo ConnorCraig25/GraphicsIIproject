@@ -73,7 +73,7 @@ void Sample3DSceneRenderer::Update(DX::StepTimer const& timer)
 		double totalRotation = timer.GetTotalSeconds() * radiansPerSecond;
 		float radians = static_cast<float>(fmod(totalRotation, XM_2PI));
 
-		Rotate(radians);
+		Rotate(135.0*3.14/180);
 	}
 
 
@@ -234,7 +234,7 @@ void Sample3DSceneRenderer::Render(void)
 	context->VSSetConstantBuffers1(0, 1, m_constantBuffer.GetAddressOf(), nullptr, nullptr);
 	// Attach our pixel shader.
 	context->PSSetShader(m_pixelShader.Get(), nullptr, 0);
-	context->PSSetShaderResources(0, 1, m_sphereTex.GetAddressOf());
+	context->PSSetShaderResources(0, 1, m_bunnyTex.GetAddressOf());
 	// Draw the objects.
 	context->DrawIndexed(m_indexCount, 0, 0);
 }
@@ -277,7 +277,7 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 		vector<XMFLOAT3> normals;
 		vector<XMINT3> trindices;
 		FILE * file = nullptr;
-		fopen_s(&file, "Assets/sphere.obj", "r");
+		fopen_s(&file, "Assets/bunny.obj", "r");
 		if (file != NULL)
 		{
 			while (true)
@@ -392,7 +392,7 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateBuffer(&indexBufferDesc, &indexBufferData, &m_indexBuffer));
 	});
 	CreateDDSTextureFromFile(m_deviceResources->GetD3DDevice(),
-		L"Assets/celestial.dds", nullptr, m_sphereTex.GetAddressOf());
+		L"Assets/bunny.dds", nullptr, m_bunnyTex.GetAddressOf());
 	// Once the cube is loaded, the object is ready to be rendered.
 	createCubeTask.then([this]()
 	{
