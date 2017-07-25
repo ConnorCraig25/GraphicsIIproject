@@ -35,18 +35,103 @@ namespace DX11UWA
 	private:
 		// Cached pointer to device resources.
 		std::shared_ptr<DX::DeviceResources> m_deviceResources;
-
-		// Direct3D resources for cube geometry.
+		
+		//some shared Direct3D resources
 		Microsoft::WRL::ComPtr<ID3D11InputLayout>	m_inputLayout;
-		Microsoft::WRL::ComPtr<ID3D11Buffer>		m_vertexBuffer;
-		Microsoft::WRL::ComPtr<ID3D11Buffer>		m_indexBuffer;
 		Microsoft::WRL::ComPtr<ID3D11VertexShader>	m_vertexShader;
 		Microsoft::WRL::ComPtr<ID3D11PixelShader>	m_pixelShader;
-		Microsoft::WRL::ComPtr<ID3D11Buffer>		m_constantBuffer;
-		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_bunnyTex;
-		// System resources for cube geometry.
-		ModelViewProjectionConstantBuffer	m_constantBufferData;
-		uint32	m_indexCount;
+		Microsoft::WRL::ComPtr<ID3D11PixelShader>   m_light_pixelShader;
+		Microsoft::WRL::ComPtr<ID3D11Buffer>		m_ConstantBuffer;	
+
+		ModelViewProjectionConstantBuffer	m_constBufferData;
+
+
+		
+		//lighting
+		struct Light
+		{
+			XMFLOAT4    Position;    //16
+			XMFLOAT4    Direction;   //16
+			XMFLOAT4    radius;
+			XMFLOAT4    Color; //16
+
+			XMFLOAT4    AttenuationData;
+			// x =  SpotAngle;
+			// y =  ConstantAttenuation;
+			// z =  LinearAttenuation;
+			// w =  QuadraticAttenuation; 
+
+			XMFLOAT4 LightTypeEnabled;
+			// x  = type
+			// y = Enabled;
+
+			XMFLOAT4   ConeRatio; // x = inner ratio,  y = outerratio
+
+			XMFLOAT4    coneAngle;
+
+		};
+
+		struct LightProperties
+		{
+			XMFLOAT4 EyePosition;
+			XMFLOAT4 GlobalAmbient;
+			Light  Lights[3];
+		};
+		LightProperties m_LightProperties;
+
+		XMVECTORF32 LightColors[3] =
+		{
+			// Directional light;      Point Light;    Spot Light;
+			Colors::White, Colors::Red, Colors::Blue
+
+		};
+
+		bool LightEnabled[3] =
+		{
+			true, true, true
+		};
+
+		//Dynamic Variables
+		bool dirLightSwitch = false; // false = negative direction true = positive direction
+		bool pointLightSwitch = false; // false = negative direction true = positive direction
+		float spotRad = 10.0f;
+		float innerConeRat = .8f;
+		float outterConeRat = .45f;
+		XMFLOAT4 coneAng = { 0,-1.0f, -1.0f, 0 };
+
+		XMFLOAT4 pointLightPos = { 2.0f,2.0f, 5.0f,1 };
+		XMFLOAT4 directionalLightPos = { 2.0f,1.0f, 5.0f,1 };
+		XMFLOAT4 spotPos = { -5.0, 5.0f, 0.0f,1 };
+
+		int numLights = 3;
+		float radius = 10.0f;
+		float offset = 2.0f * XM_PI / numLights;
+
+
+		Microsoft::WRL::ComPtr<ID3D11Buffer> lightbuffer;
+
+
+		// Direct3D resources for BUNNY geometry.//
+		Microsoft::WRL::ComPtr<ID3D11Buffer>		m_VertBunnyBuffer;
+		Microsoft::WRL::ComPtr<ID3D11Buffer>		m_IndexBunnyBuffer;		
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_bunnyTex;		
+		// System resources for bunny geometry.
+		uint32	m_indexBunnyCount;
+
+		// Direct3D resources for CASTLE geometry.//
+		Microsoft::WRL::ComPtr<ID3D11Buffer>		m_VertCastleBuffer[4];
+		Microsoft::WRL::ComPtr<ID3D11Buffer>		m_IndexCastleBuffer[4];
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_castleTex[4];
+		// System resources for castle geometry.
+		uint32	m_indexCastleCount[4];
+
+		//Direct3D resources for Sky Box.//
+		Microsoft::WRL::ComPtr<ID3D11Buffer>		m_VertSkyboxBuffer;
+		Microsoft::WRL::ComPtr<ID3D11Buffer>		m_IndexSkyboxBuffer;
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_skyboxTex;
+		ModelViewProjectionConstantBuffer	m_constBufferSkyboxData;
+		// System resources for Skybox geometry.
+		uint32 m_indexSkyboxCount;
 
 		// Variables used with the rendering loop.
 		bool	m_loadingComplete;

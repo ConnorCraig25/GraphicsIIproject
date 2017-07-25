@@ -1,7 +1,17 @@
 Assets\bunny.dds
 Assets\bunny.obj
+Assets\Castle1.dds
+Assets\Castle1.obj
+Assets\Castle2.dds
+Assets\Castle2.obj
+Assets\Castle3.dds
+Assets\Castle3.obj
+Assets\Castle4.dds
+Assets\Castle4.obj
 Assets\celestial.dds
 Assets\LockScreenLogo.scale-200.png
+Assets\Skybox.obj
+Assets\skyboxtexture.dds
 Assets\sphere.obj
 Assets\SplashScreen.scale-200.png
 Assets\Square150x150Logo.scale-200.png
@@ -9,5 +19,6 @@ Assets\Square44x44Logo.scale-200.png
 Assets\Square44x44Logo.targetsize-24_altform-unplated.png
 Assets\StoreLogo.png
 Assets\Wide310x150Logo.scale-200.png
+LightPixelShader.cso
 SamplePixelShader.cso
 SampleVertexShader.cso

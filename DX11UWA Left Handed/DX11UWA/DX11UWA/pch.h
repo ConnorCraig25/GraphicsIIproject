@@ -26,10 +26,7 @@ class Mesh
 {
 public:
 	Mesh() {};
-	Mesh(vector<XMFLOAT3> pos,
-		vector<XMFLOAT3> uvs,
-		vector<XMFLOAT3> normals,
-		vector<XMINT3> trindices);
+	Mesh(const char* filename);
 	~Mesh();
 
 	vector<VertexPositionUVNormal> uniqueVertList;

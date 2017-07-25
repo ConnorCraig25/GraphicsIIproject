@@ -1,7 +1,25 @@
-﻿  Sample3DSceneRenderer.cpp
+﻿  App.cpp
+  Sample3DSceneRenderer.cpp
+  DX11UWAMain.cpp
 c:\users\chamjam\documents\github\graphicsiiproject\dx11uwa left handed\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(76): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\chamjam\documents\github\graphicsiiproject\dx11uwa left handed\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(356): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
-c:\users\chamjam\documents\github\graphicsiiproject\dx11uwa left handed\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(385): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
-c:\users\chamjam\documents\github\graphicsiiproject\dx11uwa left handed\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(391): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+c:\users\chamjam\documents\github\graphicsiiproject\dx11uwa left handed\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(91): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\chamjam\documents\github\graphicsiiproject\dx11uwa left handed\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(425): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+c:\users\chamjam\documents\github\graphicsiiproject\dx11uwa left handed\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(428): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
+c:\users\chamjam\documents\github\graphicsiiproject\dx11uwa left handed\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(434): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+c:\users\chamjam\documents\github\graphicsiiproject\dx11uwa left handed\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(452): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+c:\users\chamjam\documents\github\graphicsiiproject\dx11uwa left handed\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(455): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
+c:\users\chamjam\documents\github\graphicsiiproject\dx11uwa left handed\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(461): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+c:\users\chamjam\documents\github\graphicsiiproject\dx11uwa left handed\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(479): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+c:\users\chamjam\documents\github\graphicsiiproject\dx11uwa left handed\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(482): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
+c:\users\chamjam\documents\github\graphicsiiproject\dx11uwa left handed\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(488): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+c:\users\chamjam\documents\github\graphicsiiproject\dx11uwa left handed\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(506): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+c:\users\chamjam\documents\github\graphicsiiproject\dx11uwa left handed\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(509): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
+c:\users\chamjam\documents\github\graphicsiiproject\dx11uwa left handed\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(515): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+c:\users\chamjam\documents\github\graphicsiiproject\dx11uwa left handed\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(533): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+c:\users\chamjam\documents\github\graphicsiiproject\dx11uwa left handed\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(536): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
+c:\users\chamjam\documents\github\graphicsiiproject\dx11uwa left handed\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(542): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+c:\users\chamjam\documents\github\graphicsiiproject\dx11uwa left handed\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(559): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+c:\users\chamjam\documents\github\graphicsiiproject\dx11uwa left handed\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(562): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
+c:\users\chamjam\documents\github\graphicsiiproject\dx11uwa left handed\dx11uwa\dx11uwa\content\sample3dscenerenderer.cpp(568): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
   DX11UWA.vcxproj -> C:\Users\Chamjam\Documents\GitHub\GraphicsIIproject\DX11UWA Left Handed\DX11UWA\x64\Debug\DX11UWA\DX11UWA.exe
   DX11UWA.vcxproj -> C:\Users\Chamjam\Documents\GitHub\GraphicsIIproject\DX11UWA Left Handed\DX11UWA\x64\Debug\DX11UWA\DX11UWA.pdb (Partial PDB)

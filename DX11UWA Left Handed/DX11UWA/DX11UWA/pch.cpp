@@ -1,12 +1,58 @@
 ﻿#include "pch.h"
 
-Mesh::Mesh(vector<XMFLOAT3> pos,
-	vector<XMFLOAT3> uvs,
-	vector<XMFLOAT3> normals,
-	vector<XMINT3> trindices)
+Mesh::Mesh(const char* filename)
 {
+	vector<XMFLOAT3> pos;
+	vector<XMFLOAT3> uvs;
+	vector<XMFLOAT3> normals;
+	vector<XMINT3> trindices;
+	FILE * file = nullptr;
+	fopen_s(&file, filename, "r");
+	if (file != NULL)
+	{
+		while (true)
+		{
+			char lineHeader[128];
+			// read the first word of the line
+			int res = fscanf_s(file, "%s", lineHeader, 128);
+			if (res == EOF)
+				break; // EOF = End Of File. Quit the loop.
+
+			if (strcmp(lineHeader, "v") == 0)
+			{
+				XMFLOAT3 postmp;
+				fscanf_s(file, "%f %f %f\n", &postmp.x, &postmp.y, &postmp.z);
+				pos.push_back(postmp);
+			}
+			else if (strcmp(lineHeader, "vt") == 0)
+			{
+				XMFLOAT3 uvtmp;
+				fscanf_s(file, "%f %f\n", &uvtmp.x, &uvtmp.y);
+				uvs.push_back(uvtmp);
+			}
+			else if (strcmp(lineHeader, "vn") == 0) {
+				XMFLOAT3 normaltmp;
+				fscanf_s(file, "%f %f %f\n", &normaltmp.x, &normaltmp.y, &normaltmp.z);
+				normals.push_back(normaltmp);
+			}
+			else if (strcmp(lineHeader, "f") == 0)
+			{
+				XMINT3 index1;
+				XMINT3 index2;
+				XMINT3 index3;
+				fscanf_s(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &index1.x, &index1.y, &index1.z,
+					&index2.x, &index2.y, &index2.z,
+					&index3.x, &index3.y, &index3.z);
+				trindices.push_back(index1);
+				trindices.push_back(index2);
+				trindices.push_back(index3);
+			}
+		}
+
+	}
 	for (unsigned int i = 0; i < trindices.size(); i++)
 	{
+
 		VertexPositionUVNormal tempVert =  VertexPositionUVNormal();
 
 		tempVert.pos = pos[trindices[i].x- 1 ];
@@ -49,3 +95,4 @@ Mesh::~Mesh()
 	uniqueVertList.clear();
 	indexbuffer.clear();
 }
+
