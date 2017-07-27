@@ -80,6 +80,8 @@ void Sample3DSceneRenderer::Update(DX::StepTimer const& timer)
 	m_constBufferSkyboxData.projection = m_constBufferData.projection;
 	XMStoreFloat4x4(&m_constBufferSkyboxData.model, XMMatrixTranspose(XMMatrixTranslation(m_camera._41, m_camera._42, m_camera._43)));
 
+	
+
 	XMStoreFloat4(&m_LightProperties.EyePosition, XMVectorSet(m_camera._41, m_camera._42, m_camera._43, 1.0f));
 
 	for (int i = 0; i < numLights; ++i)
@@ -92,7 +94,7 @@ void Sample3DSceneRenderer::Update(DX::StepTimer const& timer)
 		light.Color = XMFLOAT4(LightColors[i]);
 		light.AttenuationData.x = XMConvertToRadians(45.0f);
 		light.AttenuationData.y = 1.0f;
-		light.AttenuationData.z = 0.08f;
+		light.AttenuationData.z = 2.0f;
 		light.AttenuationData.w = 0.0f;
 
 		//Directional light location
@@ -143,6 +145,22 @@ void Sample3DSceneRenderer::Update(DX::StepTimer const& timer)
 		//Spot Light Information
 		if (i == 2) // Spot light Location
 		{
+			if (spotLightSwitch)
+			{
+				spotPos.z += .1f;
+				if (spotPos.z >= 2)
+				{
+					spotLightSwitch = false;
+				}
+			}
+			else
+			{
+				spotPos.z -= .1f;
+				if (spotPos.z <= -2)
+				{
+					spotLightSwitch = true;
+				}
+			}
 			LightPosition = spotPos;
 		}
 
@@ -157,11 +175,24 @@ void Sample3DSceneRenderer::Update(DX::StepTimer const& timer)
 		XMStoreFloat4(&light.Direction, LightDirection);
 
 		m_LightProperties.Lights[i] = light;
-	}
 
+		
+	}
+		
 	//m_d3dDeviceContext->UpdateSubresource(m_d3dLightPropertiesConstantBuffer.Get(), 0, nullptr, &m_LightProperties, 0, 0);
 	m_deviceResources->GetD3DDeviceContext()->UpdateSubresource(lightbuffer.Get(), 0, NULL, &m_LightProperties, 0, 0);
-
+	
+	for (unsigned int i = 0; i < 3; i++)
+	{
+		m_constBufferPyramidData[i].model = m_constBufferData.model;
+		m_constBufferPyramidData[i].projection = m_constBufferData.projection;
+		m_constBufferPyramidData[i].view = m_constBufferData.view;
+		XMStoreFloat4x4(&m_constBufferPyramidData[i].model, 
+						XMMatrixTranspose(XMMatrixTranslation(m_LightProperties.Lights[i].Position.x,
+															  m_LightProperties.Lights[i].Position.y, 
+															  m_LightProperties.Lights[i].Position.z)));
+	}
+		
 
 	// Update or move camera here
 	UpdateCamera(timer, 5.0f, 0.75f);
@@ -347,7 +378,7 @@ void Sample3DSceneRenderer::Render(void)
 
 	for (unsigned int i = 0; i < 4; i++)
 	{
-		XMStoreFloat4x4(&m_constBufferData.view, XMMatrixTranspose(XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_camera))));
+		//XMStoreFloat4x4(&m_constBufferData.view, XMMatrixTranspose(XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_camera))));
 
 
 		// Prepare the constant buffer to send it to the graphics device.
@@ -370,7 +401,19 @@ void Sample3DSceneRenderer::Render(void)
 		// Draw the objects.
 		context->DrawIndexed(m_indexCastleCount[i], 0, 0);
 	}
-
+	for (unsigned int i = 0; i < 3; i++)
+	{
+		context->UpdateSubresource1(m_ConstantBuffer.Get(), 0, NULL, &m_constBufferPyramidData[i], 0, 0, 0);
+		context->IASetVertexBuffers(0, 1, m_VertPyramidBuffer.GetAddressOf(), &stride, &offset);
+		context->IASetIndexBuffer(m_IndexPyramidBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+		context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		context->IASetInputLayout(m_inputLayout.Get());
+		context->VSSetShader(m_vertexShader.Get(), nullptr, 0);
+		context->VSSetConstantBuffers1(0, 1, m_ConstantBuffer.GetAddressOf(), nullptr, nullptr);
+		context->PSSetShader(m_pyramid_pixelShader.Get(), nullptr, 0);
+		// Draw the objects.
+		context->DrawIndexed(m_indexPyramidCount, 0, 0);
+	}
 
 	
 }
@@ -381,6 +424,7 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 	auto loadVSTask = DX::ReadDataAsync(L"SampleVertexShader.cso");
 	auto loadPSTask = DX::ReadDataAsync(L"SamplePixelShader.cso");
 	auto loadLightPSTask = DX::ReadDataAsync(L"LightPixelShader.cso");
+	auto loadPyramidPSTask = DX::ReadDataAsync(L"PyramidPixelShader.cso");
 
 	// After the vertex shader file is loaded, create the shader and input layout.
 	auto createVSTask = loadVSTask.then([this](const std::vector<byte>& fileData)
@@ -404,7 +448,12 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 		CD3D11_BUFFER_DESC constantBufferDesc(sizeof(ModelViewProjectionConstantBuffer), D3D11_BIND_CONSTANT_BUFFER);
 		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateBuffer(&constantBufferDesc, nullptr, &m_ConstantBuffer));
 	});
-
+	auto createPyramidPSTask = loadPyramidPSTask.then([this](const std::vector<byte>& fileData)
+	{
+		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreatePixelShader(&fileData[0], fileData.size(), nullptr, &m_pyramid_pixelShader));
+		CD3D11_BUFFER_DESC constantBufferDesc(sizeof(LightProperties), D3D11_BIND_CONSTANT_BUFFER);
+		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateBuffer(&constantBufferDesc, nullptr, &m_ConstantBuffer));
+	});
 	auto createlightPSTask = loadLightPSTask.then([this](const std::vector<byte>& fileData)
 	{
 		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreatePixelShader(&fileData[0], fileData.size(), nullptr, &m_light_pixelShader));
@@ -548,7 +597,7 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 			m_castleTex[3].GetAddressOf());
 	});
 
-	auto createSkyBoxTask = (createPSTask && createVSTask && createlightPSTask).then([this]()
+	auto createSkyBoxTask = (createPSTask && createVSTask).then([this]()
 	{
 		Mesh skybox = Mesh("Assets/Skybox.obj");
 
@@ -574,6 +623,26 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 								 m_skyboxTex.GetAddressOf());
 	});
 
+	auto createPyramidsTask = (createPSTask && createVSTask  && createPyramidPSTask).then([this]()
+	{
+		Mesh pyramid = Mesh("Assets/pyramid.obj");
+
+		D3D11_SUBRESOURCE_DATA vertexBufferData = { 0 };
+		vertexBufferData.pSysMem = pyramid.uniqueVertList.data();
+		vertexBufferData.SysMemPitch = 0;
+		vertexBufferData.SysMemSlicePitch = 0;
+		CD3D11_BUFFER_DESC vertexBufferDesc(sizeof(VertexPositionUVNormal)*pyramid.uniqueVertList.size(), D3D11_BIND_VERTEX_BUFFER);
+		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &m_VertPyramidBuffer));
+
+		m_indexPyramidCount = pyramid.indexbuffer.size();
+
+		D3D11_SUBRESOURCE_DATA indexBufferData = { 0 };
+		indexBufferData.pSysMem = pyramid.indexbuffer.data();
+		indexBufferData.SysMemPitch = 0;
+		indexBufferData.SysMemSlicePitch = 0;
+		CD3D11_BUFFER_DESC indexBufferDesc(sizeof(unsigned int)*pyramid.indexbuffer.size(), D3D11_BIND_INDEX_BUFFER);
+		DX::ThrowIfFailed(m_deviceResources->GetD3DDevice()->CreateBuffer(&indexBufferDesc, &indexBufferData, &m_IndexPyramidBuffer));
+	});
 
 	// Once the geometry is loaded, the object is ready to be rendered.
 
@@ -584,7 +653,8 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources(void)
 	 createCastle2Task && 
 	 createCastle3Task && 
 	 createCastle4Task && 
-	 createSkyBoxTask).then([this]()
+	 createSkyBoxTask  &&
+	 createPyramidsTask).then([this]()
 	{
 		m_loadingComplete = true;
 	});

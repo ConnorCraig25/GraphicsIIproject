@@ -31,13 +31,13 @@ cbuffer LightProperties : register(b0)
 	Light Lights[3];           
 };                       
 
-float DoAttenuation(Light light, PixelShaderInput input)
+float Attenuation(Light light, PixelShaderInput input)
 {
 	
 	return 1.0f - saturate(length(light.Position.xyz - input.world_pos.xyz) / light.radius.x);
 }
 
-float DoSpotlightAttenuation(Light light, PixelShaderInput input)
+float SpotlightAttenuation(Light light, PixelShaderInput input)
 {
 	float ans;
     float3 lightdir = normalize(light.Position.xyz - input.world_pos.xyz);
@@ -46,18 +46,18 @@ float DoSpotlightAttenuation(Light light, PixelShaderInput input)
 	return ans;
 }
 
-float4 DoPointLight(Light light, PixelShaderInput input)
+float4 PointLight(Light light, PixelShaderInput input)
 {
 	float4 result;
     float3 lightdir = normalize(light.Position.xyz - input.world_pos.xyz);
 	float  lightratio = saturate(dot(lightdir,input.normal));
 
 	result = lightratio * light.Color;
-	result = result * DoAttenuation(light, input);
+	result = result * Attenuation(light, input);
 	return result;
 }
 
-float4 DoDirectionalLight(Light light, PixelShaderInput input)
+float4 DirectionalLight(Light light, PixelShaderInput input)
 {
 	
 	float4 result;
@@ -68,7 +68,7 @@ float4 DoDirectionalLight(Light light, PixelShaderInput input)
 	return result;
 }
 
-float4 DoSpotLight(Light light, PixelShaderInput input)
+float4 SpotLight(Light light, PixelShaderInput input)
 {
 	float4 result;
 	
@@ -78,27 +78,27 @@ float4 DoSpotLight(Light light, PixelShaderInput input)
 	float lightratio = saturate(dot(lightdir, input.normal.xyz));
 
 	result = spotFactor * lightratio * light.Color;
-	result = result * DoAttenuation(light, input);
-	result = result * DoSpotlightAttenuation(light, input);
+	result = result * Attenuation(light, input);
+	result = result * SpotlightAttenuation(light, input);
 	return result;
 }
 
 // A pass-through function for the (interpolated) color data.
 float4 main(PixelShaderInput input) : SV_TARGET
 {
-    float4 baseColor = baseTexture.Sample(filters, input.uv.xy);
+    float4 baseColor = baseTexture.Sample(filters, input.uv);
     if (baseColor.a < 0.5f)
     {
         discard;
     }
     
-    float4 dirColor = DoDirectionalLight(Lights[0], input) * baseColor;
-    float4 spotColor = DoSpotLight(Lights[2], input) * baseColor;
+    float4 dirColor = DirectionalLight(Lights[0], input) * baseColor;
+    float4 spotColor = SpotLight(Lights[2], input) * baseColor;
 
-    float4 pointcolor = DoPointLight(Lights[1], input) * baseColor;
+    float4 pointcolor = PointLight(Lights[1], input) * baseColor;
    
 
    
+
 	return saturate(dirColor + spotColor + pointcolor);
-	//return saturate(spotColor);
 }

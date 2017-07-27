@@ -110,18 +110,6 @@
     <Image Include="Assets\bunny.dds">
       <Filter>Assets</Filter>
     </Image>
-    <Image Include="Assets\Castle1.dds">
-      <Filter>Assets</Filter>
-    </Image>
-    <Image Include="Assets\Castle2.dds">
-      <Filter>Assets</Filter>
-    </Image>
-    <Image Include="Assets\Castle3.dds">
-      <Filter>Assets</Filter>
-    </Image>
-    <Image Include="Assets\Castle4.dds">
-      <Filter>Assets</Filter>
-    </Image>
     <Image Include="Assets\skyboxtexture.dds">
       <Filter>Assets</Filter>
     </Image>
@@ -135,6 +123,15 @@
     <None Include="Assets\bunny.obj">
       <Filter>Assets</Filter>
     </None>
+    <None Include="Assets\Castle1.dds" />
+    <None Include="Assets\Castle2.dds" />
+    <None Include="Assets\Castle3.dds" />
+    <None Include="Assets\Castle4.dds" />
+    <None Include="Assets\Castle1.obj" />
+    <None Include="Assets\Castle2.obj" />
+    <None Include="Assets\Castle3.obj" />
+    <None Include="Assets\Castle4.obj" />
+    <None Include="Assets\Skybox.obj" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Content\SamplePixelShader.hlsl">
@@ -146,21 +143,12 @@
     <FxCompile Include="Content\LightPixelShader.hlsl">
       <Filter>Content\Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="Content\PyramidPixelShader.hlsl">
+      <Filter>Content\Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <Object Include="Assets\Castle1.obj">
-      <Filter>Assets</Filter>
-    </Object>
-    <Object Include="Assets\Castle2.obj">
-      <Filter>Assets</Filter>
-    </Object>
-    <Object Include="Assets\Castle3.obj">
-      <Filter>Assets</Filter>
-    </Object>
-    <Object Include="Assets\Castle4.obj">
-      <Filter>Assets</Filter>
-    </Object>
-    <Object Include="Assets\Skybox.obj">
+    <Object Include="Assets\pyramid.obj">
       <Filter>Assets</Filter>
     </Object>
   </ItemGroup>

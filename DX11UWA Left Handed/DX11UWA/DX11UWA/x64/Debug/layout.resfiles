@@ -10,6 +10,7 @@ Assets\Castle4.dds
 Assets\Castle4.obj
 Assets\celestial.dds
 Assets\LockScreenLogo.scale-200.png
+Assets\pyramid.obj
 Assets\Skybox.obj
 Assets\skyboxtexture.dds
 Assets\sphere.obj
@@ -20,5 +21,6 @@ Assets\Square44x44Logo.targetsize-24_altform-unplated.png
 Assets\StoreLogo.png
 Assets\Wide310x150Logo.scale-200.png
 LightPixelShader.cso
+PyramidPixelShader.cso
 SamplePixelShader.cso
 SampleVertexShader.cso

@@ -27,13 +27,13 @@
     <AppXManifest Include="C:\Users\Chamjam\Documents\GitHub\GraphicsIIproject\DX11UWA Left Handed\DX11UWA\x64\Debug\DX11UWA\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2017-07-25T10:54:44.025</Modified>
+      <Modified>2017-07-25T19:34:41.455</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\Chamjam\Documents\GitHub\GraphicsIIproject\DX11UWA Left Handed\DX11UWA\x64\Debug\DX11UWA\DX11UWA.exe">
       <PackagePath>DX11UWA.exe</PackagePath>
-      <Modified>2017-07-25T17:34:53.780</Modified>
+      <Modified>2017-07-27T00:22:10.696</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Chamjam\Documents\GitHub\GraphicsIIproject\DX11UWA Left Handed\DX11UWA\x64\Debug\DX11UWA\DX11UWA.winmd">
       <PackagePath>DX11UWA.winmd</PackagePath>
@@ -46,6 +46,10 @@
     <AppxPackagedFile Include="C:\Users\Chamjam\Documents\GitHub\GraphicsIIproject\DX11UWA Left Handed\DX11UWA\DX11UWA\Assets\celestial.dds">
       <PackagePath>Assets\celestial.dds</PackagePath>
       <Modified>2017-07-18T21:56:22.276</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Chamjam\Documents\GitHub\GraphicsIIproject\DX11UWA Left Handed\DX11UWA\DX11UWA\Assets\skyboxtexture.dds">
+      <PackagePath>Assets\skyboxtexture.dds</PackagePath>
+      <Modified>2017-07-25T19:11:10.931</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Chamjam\Documents\GitHub\GraphicsIIproject\DX11UWA Left Handed\DX11UWA\DX11UWA\Assets\Castle1.dds">
       <PackagePath>Assets\Castle1.dds</PackagePath>
@@ -62,10 +66,6 @@
     <AppxPackagedFile Include="C:\Users\Chamjam\Documents\GitHub\GraphicsIIproject\DX11UWA Left Handed\DX11UWA\DX11UWA\Assets\Castle4.dds">
       <PackagePath>Assets\Castle4.dds</PackagePath>
       <Modified>2017-07-20T21:08:52.241</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Chamjam\Documents\GitHub\GraphicsIIproject\DX11UWA Left Handed\DX11UWA\DX11UWA\Assets\skyboxtexture.dds">
-      <PackagePath>Assets\skyboxtexture.dds</PackagePath>
-      <Modified>2017-07-25T09:10:32.603</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Chamjam\Documents\GitHub\GraphicsIIproject\DX11UWA Left Handed\DX11UWA\DX11UWA\Assets\LockScreenLogo.scale-200.png">
       <PackagePath>Assets\LockScreenLogo.scale-200.png</PackagePath>
@@ -127,11 +127,19 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Chamjam\Documents\GitHub\GraphicsIIproject\DX11UWA Left Handed\DX11UWA\DX11UWA\Assets\Skybox.obj">
       <PackagePath>Assets\Skybox.obj</PackagePath>
-      <Modified>2017-07-25T08:26:46.545</Modified>
+      <Modified>2017-07-25T19:05:55.794</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Chamjam\Documents\GitHub\GraphicsIIproject\DX11UWA Left Handed\DX11UWA\DX11UWA\Assets\pyramid.obj">
+      <PackagePath>Assets\pyramid.obj</PackagePath>
+      <Modified>2017-07-25T22:01:06.248</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Chamjam\Documents\GitHub\GraphicsIIproject\DX11UWA Left Handed\DX11UWA\x64\Debug\DX11UWA\LightPixelShader.cso">
       <PackagePath>LightPixelShader.cso</PackagePath>
-      <Modified>2017-07-25T12:03:19.889</Modified>
+      <Modified>2017-07-26T23:59:23.652</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Chamjam\Documents\GitHub\GraphicsIIproject\DX11UWA Left Handed\DX11UWA\x64\Debug\DX11UWA\PyramidPixelShader.cso">
+      <PackagePath>PyramidPixelShader.cso</PackagePath>
+      <Modified>2017-07-25T19:34:37.213</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Chamjam\Documents\GitHub\GraphicsIIproject\DX11UWA Left Handed\DX11UWA\x64\Debug\DX11UWA\SamplePixelShader.cso">
       <PackagePath>SamplePixelShader.cso</PackagePath>
@@ -139,7 +147,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Chamjam\Documents\GitHub\GraphicsIIproject\DX11UWA Left Handed\DX11UWA\x64\Debug\DX11UWA\SampleVertexShader.cso">
       <PackagePath>SampleVertexShader.cso</PackagePath>
-      <Modified>2017-07-25T10:39:27.077</Modified>
+      <Modified>2017-07-26T23:58:01.440</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.UniversalCRT.Debug\10.0.10586.0\\redist\Debug\X64\ucrtbased.dll">
       <PackagePath>ucrtbased.dll</PackagePath>
@@ -147,7 +155,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Chamjam\Documents\GitHub\GraphicsIIproject\DX11UWA Left Handed\DX11UWA\x64\Debug\DX11UWA\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2017-07-25T10:54:43.932</Modified>
+      <Modified>2017-07-25T19:34:41.389</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

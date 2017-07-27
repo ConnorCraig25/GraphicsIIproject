@@ -34,6 +34,9 @@
     <AppxPackagedFile Include="C:\Users\Chamjam\Documents\GitHub\GraphicsIIproject\DX11UWA Left Handed\DX11UWA\DX11UWA\Assets\celestial.dds">
       <PackagePath>Assets\celestial.dds</PackagePath>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Chamjam\Documents\GitHub\GraphicsIIproject\DX11UWA Left Handed\DX11UWA\DX11UWA\Assets\skyboxtexture.dds">
+      <PackagePath>Assets\skyboxtexture.dds</PackagePath>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Chamjam\Documents\GitHub\GraphicsIIproject\DX11UWA Left Handed\DX11UWA\DX11UWA\Assets\Castle1.dds">
       <PackagePath>Assets\Castle1.dds</PackagePath>
     </AppxPackagedFile>
@@ -45,9 +48,6 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Chamjam\Documents\GitHub\GraphicsIIproject\DX11UWA Left Handed\DX11UWA\DX11UWA\Assets\Castle4.dds">
       <PackagePath>Assets\Castle4.dds</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Chamjam\Documents\GitHub\GraphicsIIproject\DX11UWA Left Handed\DX11UWA\DX11UWA\Assets\skyboxtexture.dds">
-      <PackagePath>Assets\skyboxtexture.dds</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Chamjam\Documents\GitHub\GraphicsIIproject\DX11UWA Left Handed\DX11UWA\DX11UWA\Assets\LockScreenLogo.scale-200.png">
       <PackagePath>Assets\LockScreenLogo.scale-200.png</PackagePath>
@@ -97,8 +97,14 @@
     <AppxPackagedFile Include="C:\Users\Chamjam\Documents\GitHub\GraphicsIIproject\DX11UWA Left Handed\DX11UWA\DX11UWA\Assets\Skybox.obj">
       <PackagePath>Assets\Skybox.obj</PackagePath>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Chamjam\Documents\GitHub\GraphicsIIproject\DX11UWA Left Handed\DX11UWA\DX11UWA\Assets\pyramid.obj">
+      <PackagePath>Assets\pyramid.obj</PackagePath>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Chamjam\Documents\GitHub\GraphicsIIproject\DX11UWA Left Handed\DX11UWA\x64\Debug\DX11UWA\LightPixelShader.cso">
       <PackagePath>LightPixelShader.cso</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Chamjam\Documents\GitHub\GraphicsIIproject\DX11UWA Left Handed\DX11UWA\x64\Debug\DX11UWA\PyramidPixelShader.cso">
+      <PackagePath>PyramidPixelShader.cso</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Chamjam\Documents\GitHub\GraphicsIIproject\DX11UWA Left Handed\DX11UWA\x64\Debug\DX11UWA\SamplePixelShader.cso">
       <PackagePath>SamplePixelShader.cso</PackagePath>
